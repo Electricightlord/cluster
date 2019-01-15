@@ -1,0 +1,8 @@
+version: "2"
+services:
+
+    nginx:
+        image: nginx:latest
+        ports:
+            - 8882:80
+        container_name: nginx_2
