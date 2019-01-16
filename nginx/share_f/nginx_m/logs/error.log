@@ -1,0 +1,2 @@
+2019/01/16 09:16:38 [emerg] 7#0: open() "/usr/local/nginx/conf/nginx.conf" failed (2: No such file or directory)
+2019/01/16 09:16:39 [emerg] 7#0: open() "/usr/local/nginx/conf/nginx.conf" failed (2: No such file or directory)
