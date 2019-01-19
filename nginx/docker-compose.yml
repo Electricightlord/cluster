@@ -3,16 +3,18 @@ services:
 
     nginx_m:
         image: nginx:latest
+        cap_add: 
+            - SYS_PTRACE
         container_name: nginx_m
         volumes:
             - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/nginx:/usr/local/nginx/conf
-            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/keepalived:/usr/local/keepalived/etc/keepalived/
+            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/keepalived:/usr/local/keepalived/etc/keepalived
             - /media/lihao/F/mywork/nginx/share_f/nginx_m/logs:/usr/local/nginx/logs
 
-    nginx_s:
-        image: nginx:latest
-        container_name: nginx_s
-        volumes:
-            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/nginx:/usr/local/nginx/conf
-            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/keepalived:/usr/local/keepalived/etc/keepalived/
-            - /media/lihao/F/mywork/nginx/share_f/nginx_m/logs:/usr/local/nginx/logs
+#    nginx_s:
+#        image: nginx:latest
+#        container_name: nginx_s
+#        volumes:
+#            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/nginx:/usr/local/nginx/conf
+#            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/keepalived:/usr/local/keepalived/etc/keepalived
+#            - /media/lihao/F/mywork/nginx/share_f/nginx_m/logs:/usr/local/nginx/logs
