@@ -2,19 +2,36 @@ version: "2"
 services:
 
     nginx_m:
-        image: nginx:latest
-        cap_add: 
-            - SYS_PTRACE
+        image: registry.cn-hangzhou.aliyuncs.com/elem-lihao/nginx:1.0
         container_name: nginx_m
+        privileged: true
+        command: 
+            - /bin/bash
+            - -c
+            - service keepalived start && service nginx start && tail -f /var/log/nginx/error.log        
         volumes:
-            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/nginx:/usr/local/nginx/conf
-            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/keepalived:/usr/local/keepalived/etc/keepalived
-            - /media/lihao/F/mywork/nginx/share_f/nginx_m/logs:/usr/local/nginx/logs
-
-#    nginx_s:
-#        image: nginx:latest
-#        container_name: nginx_s
-#        volumes:
-#            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/nginx:/usr/local/nginx/conf
-#            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/keepalived:/usr/local/keepalived/etc/keepalived
-#            - /media/lihao/F/mywork/nginx/share_f/nginx_m/logs:/usr/local/nginx/logs
+            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/nginx:/etc/nginx
+            - /media/lihao/F/mywork/nginx/share_f/nginx_m/conf/keepalived:/etc/keepalived
+            - /media/lihao/F/mywork/nginx/share_f/nginx_m/www:/usr/share/nginx/www
+        networks:
+            default:
+                ipv4_address: 172.18.0.2
+    nginx_s:
+        image: registry.cn-hangzhou.aliyuncs.com/elem-lihao/nginx:1.0
+        container_name: nginx_s
+        privileged: true
+        command: 
+            - /bin/bash
+            - -c
+            - service keepalived start && service nginx start && tail -f /var/log/nginx/error.log         
+        volumes:
+            - /media/lihao/F/mywork/nginx/share_f/nginx_s/conf/nginx:/etc/nginx
+            - /media/lihao/F/mywork/nginx/share_f/nginx_s/conf/keepalived:/etc/keepalived
+            - /media/lihao/F/mywork/nginx/share_f/nginx_s/www:/usr/share/nginx/www
+        networks:
+            default:
+                ipv4_address: 172.18.0.3
+networks:
+    default:
+        external:
+            name: backend

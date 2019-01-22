@@ -1,0 +1,28 @@
+server {
+	#listen   80; ## listen for ipv4; this line is default and implied
+
+	root /usr/share/nginx/www;
+	index index.html index.htm;
+
+	server_name localhost;
+
+	location / {
+		try_files $uri $uri/ /index.html;
+	}
+
+	location /doc/ {
+		alias /usr/share/doc/;
+		autoindex on;
+		allow 127.0.0.1;
+		deny all;
+	}
+
+
+    	location ~ \.php$ {
+        	fastcgi_pass   127.0.0.1:9000;
+       		fastcgi_index  index.php;
+        	fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        	include        fastcgi_params;
+	}	
+}
+

@@ -1,0 +1,53 @@
+version: "2"
+services:
+
+    php_1:
+        image: php
+        container_name: php_1
+        privileged: true
+        command: 
+            - /bin/bash
+            - -c
+            - php-fpm && nginx && tail -f /usr/local/php/var/log/php-fpm.log
+        volumes:
+            - /media/lihao/F/mywork/php/share_f/conf/etc:/usr/local/php/etc
+            - /media/lihao/F/mywork/php/share_f/www:/usr/share/nginx/www
+            - /media/lihao/F/mywork/php/share_f/conf/nginxconf:/etc/nginx
+        networks:
+            default:
+                ipv4_address: 172.18.0.4
+    php_2:
+        image: php
+        container_name: php_2
+        privileged: true
+        command: 
+            - /bin/bash
+            - -c
+            - php-fpm && nginx && tail -f /usr/local/php/var/log/php-fpm.log
+        volumes:
+            - /media/lihao/F/mywork/php/share_f/conf/etc:/usr/local/php/etc
+            - /media/lihao/F/mywork/php/share_f/www:/usr/share/nginx/www
+            - /media/lihao/F/mywork/php/share_f/conf/nginxconf:/etc/nginx
+
+        networks:
+            default:
+                ipv4_address: 172.18.0.5
+    php_3:
+        image: php
+        container_name: php_3
+        privileged: true
+        command: 
+            - /bin/bash
+            - -c
+            - php-fpm && nginx && tail -f /usr/local/php/var/log/php-fpm.log
+        volumes:
+            - /media/lihao/F/mywork/php/share_f/conf/etc:/usr/local/php/etc
+            - /media/lihao/F/mywork/php/share_f/www:/usr/share/nginx/www
+            - /media/lihao/F/mywork/php/share_f/conf/nginxconf:/etc/nginx
+        networks:
+            default:
+                ipv4_address: 172.18.0.6
+networks:
+    default:
+        external:
+            name: backend
