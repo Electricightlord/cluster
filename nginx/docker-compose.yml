@@ -2,7 +2,7 @@ version: "2"
 services:
 
     nginx_m:
-        image: registry.cn-hangzhou.aliyuncs.com/elem-lihao/nginx:1.0
+        image: hub.c.163.com/electricight/nginx:1.0
         container_name: nginx_m
         privileged: true
         command: 
@@ -17,9 +17,11 @@ services:
             default:
                 ipv4_address: 172.18.0.2
     nginx_s:
-        image: registry.cn-hangzhou.aliyuncs.com/elem-lihao/nginx:1.0
+        image: hub.c.163.com/electricight/nginx:1.0
         container_name: nginx_s
         privileged: true
+        depends_on:
+            - nginx_m
         command: 
             - /bin/bash
             - -c
