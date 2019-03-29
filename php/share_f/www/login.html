@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<style>
+    table {
+        margin: 0 auto;
+        width: 500px;
+        align-content: center;
+    }
+</style>
+<body>
+<form action="login_do.php" method="post">
+    <table>
+        <tr>
+            <td>用户名:<input type="text" name="username"></td>
+        </tr>
+        <tr>
+            <td>密&nbsp;&nbsp;&nbsp;&nbsp;码:<input type="text" name="password"></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="登录"/>
+                <input type="button" value="注册" onclick="window.location.href='register.html'"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

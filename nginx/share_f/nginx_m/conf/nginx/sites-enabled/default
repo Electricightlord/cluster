@@ -1,1 +1,12 @@
-/etc/nginx/sites-available/default
+server {
+	#listen   80; ## listen for ipv4; this line is default and implied
+
+	root /usr/share/nginx/www;
+	index index.html index.htm;
+
+	server_name localhost;
+
+	location / {
+		proxy_pass http://phpcluster; 
+	}
+}

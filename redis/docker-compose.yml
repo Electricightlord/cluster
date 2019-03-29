@@ -1,34 +1,37 @@
 version: "2"
 services:
-
     redis_master:
-        image: redis
+        image: hub.c.163.com/electricight/redis:latest
         container_name: redis_master
         privileged: true
         command:
             - /bin/bash
             - -c
-            - redis-server /usr/local/redis/etc/redis.conf && tail -f /usr/local/redis/log/redis.log
+            - service keepalived start && redis-server /usr/local/redis/etc/redis.conf && tail -f /usr/local/redis/log/redis.log
         volumes:
             - /media/lihao/F/mywork/redis/share_f/conf/master:/usr/local/redis/etc
+            - /media/lihao/F/mywork/redis/share_f/sh:/usr/local/redis/sh
+            - /media/lihao/F/mywork/redis/share_f/conf/master_keepalived:/etc/keepalived
         networks:
             default:
                 ipv4_address: 172.18.0.7
     redis_backup:
-        image: redis
+        image: hub.c.163.com/electricight/redis:latest
         container_name: redis_backup
         privileged: true
         command:
             - /bin/bash
             - -c
-            - redis-server /usr/local/redis/etc/redis.conf && tail -f /usr/local/redis/log/redis.log
+            - service keepalived start && redis-server /usr/local/redis/etc/redis.conf && tail -f /usr/local/redis/log/redis.log
         volumes:
             - /media/lihao/F/mywork/redis/share_f/conf/backup:/usr/local/redis/etc
+            - /media/lihao/F/mywork/redis/share_f/sh:/usr/local/redis/sh
+            - /media/lihao/F/mywork/redis/share_f/conf/backup_keepalived:/etc/keepalived
         networks:
             default:
                 ipv4_address: 172.18.0.8
     redis_sentinel:
-        image: redis
+        image: hub.c.163.com/electricight/redis:latest
         container_name: redis_sentinel
         privileged: true
         command:
@@ -44,3 +47,4 @@ networks:
     default:
         external:
             name: backend
+

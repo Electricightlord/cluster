@@ -1,0 +1,32 @@
+version: "2"
+services:
+    mysql_master:
+        image: hub.c.163.com/electricight/mysql:1.1
+        container_name: mysql_master
+        privileged: true
+        command:
+            - /bin/bash
+            - -c
+            - cp /etc/mysqlcnf/my.cnf /etc/my.cnf && chmod 644 /etc/my.cnf && mysqld --initialize-insecure && mysqld_safe --user=mysql && tail -f /etc/my.cnf
+        volumes:
+            - /media/lihao/F/mywork/mysql/share_f/master/conf:/etc/mysqlcnf
+        networks:
+            default:
+                ipv4_address: 172.18.0.10
+    mysql_backup:
+        image: hub.c.163.com/electricight/mysql:1.1
+        container_name: mysql_backup
+        privileged: true
+        command:
+            - /bin/bash
+            - -c
+            - cp /etc/mysqlcnf/my.cnf /etc/my.cnf && chmod 644 /etc/my.cnf && mysqld --initialize-insecure && mysqld_safe --user=mysql && tail -f /etc/my.cnf
+        volumes:
+            - /media/lihao/F/mywork/mysql/share_f/backup/conf:/etc/mysqlcnf
+        networks:
+            default:
+                ipv4_address: 172.18.0.11
+networks:
+    default:
+        external:
+            name: backend
