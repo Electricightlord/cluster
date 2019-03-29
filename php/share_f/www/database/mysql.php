@@ -14,8 +14,7 @@ class MySql
 
     private function __construct()
     {
-        $configFilePath = dirname(__FILE__) . "/mysql.json";
-        $json = json_decode(file_get_contents($configFilePath), true);
+        $json = getJson("mysql");
         $dsn = sprintf("mysql:dbname=%s;host=%s:%d", $json["dbname"], $json["host"], $json["port"]);
         try {
             $pdo = new PDO($dsn, $json["user"], $json["password"]);
@@ -39,7 +38,7 @@ class MySql
     {
         $searchSql = "select * from user where username=:username";
         $stmt = self::$instance->pdo->prepare($searchSql);
-        $stmt->bindParam(":username",$username);
+        $stmt->bindParam(":username", $username);
         if ($stmt->execute()) {
             return null;
         }
