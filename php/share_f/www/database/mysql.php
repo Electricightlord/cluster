@@ -1,28 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lihao
- * Date: 19-3-25
- * Time: 下午1:20
- */
 include_once "common.php";
 
 class MySql
 {
     public static $instance;
-    private $pdo;
+    private $masterPdo;
+    private $backupPdo;
 
     private function __construct()
     {
         $json = getJson("mysql");
         $dsn = sprintf("mysql:dbname=%s;host=%s:%d", $json["dbname"], $json["host"], $json["port"]);
         try {
-            $pdo = new PDO($dsn, $json["user"], $json["password"]);
-            $this->pdo = $pdo;
+            $masterServerInfo = $json["master"];
+            $backupServerInfo = $json["backup"];
+            $masterPdo = new PDO($dsn, $masterServerInfo["user"], $masterServerInfo["password"]);
+            $backupPdo = new PDO($dsn, $backupServerInfo["user"], $backupServerInfo["password"]);
+            $this->masterPdo = $masterPdo;
+            $this->backupPdo = $backupPdo;
             return $this;
         }
         catch (PDOException $exception) {
             echo "数据库连接失败:" . $exception->getMessage();
+            exit();
         }
     }
 
@@ -36,14 +36,12 @@ class MySql
 
     public function addUser($username, $password)
     {
-        $searchSql = "select * from user where username=:username";
-        $stmt = self::$instance->pdo->prepare($searchSql);
-        $stmt->bindParam(":username", $username);
-        if ($stmt->execute()) {
+        $checkUser = $this->findUserByUsernameAndPassword($username);
+        if ($checkUser != null) {
             return null;
         }
         $insertSql = "insert into user (`username`,`password`) values(:username,:password)";
-        $stmt = self::$instance->pdo->prepare($insertSql);
+        $stmt = self::$instance->masterPdo->prepare($insertSql);
         $stmt->bindParam(":username", $username);
         $stmt->bindParam(":password", $password);
         if ($stmt->execute()) {
@@ -53,17 +51,16 @@ class MySql
         }
     }
 
-    public function findUserByUsernameAndPassword($username, $password)
+    public function findUserByUsernameAndPassword($username)
     {
-        $sql = "select * from user where username= :username and password=:password";
-        $stmt = self::$instance->pdo->prepare($sql);
+        $sql = "select * from user where username= :username";
+        $stmt = self::$instance->backupPdo->prepare($sql);
         $stmt->bindParam(":username", $username);
-        $stmt->bindParam(":password", $password);
         if (!$stmt->execute()) {
             return null;
         } else {
             $userInfoArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if (count($userInfoArray) == 1) {
+            if ($userInfoArray[0] != null) {
                 return new User($userInfoArray[0]["username"], $userInfoArray[0]["password"]);
             } else {
                 return null;

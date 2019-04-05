@@ -15,7 +15,7 @@ include_once "common.php";
 <body>
 <?php
 if (isset($_SESSION)) {
-    $user = $_SESSION['user'];
+    @$user = $_SESSION['user'];
 }
 if (!isset($user)) {
     ?>
@@ -25,8 +25,15 @@ if (!isset($user)) {
     ?>
     <h1><?php echo $user->getUsername(); ?></h1>
     <h1>欢迎使用集群demo</h1>
+    <h1>nginx服务器地址:<?php echo $_SERVER["REMOTE_ADDR"]; ?></h1>
+    <h1>php服务器地址:<?php echo $_SERVER["SERVER_ADDR"] ?></h1>
+    <h1>redis服务器地址:<?php echo $hostAndIp["host"]; ?></h1>
+    <h1>mysql服务器地址:<?php echo getJson("mysql")["host"]; ?></h1>
     <?php
 }
+//echo "<pre>";
+//print_r($_SERVER);
+//echo "</pre>";
 ?>
 </body>
 </html>

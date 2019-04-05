@@ -7,7 +7,7 @@ services:
         command:
             - /bin/bash
             - -c
-            - cp /etc/mysqlcnf/my.cnf /etc/my.cnf && chmod 644 /etc/my.cnf && mysqld --initialize-insecure && mysqld_safe --user=mysql && tail -f /etc/my.cnf
+            - cp /etc/mysqlcnf/my.cnf /etc/my.cnf && chmod 644 /etc/my.cnf  && tail -f /etc/my.cnf
         volumes:
             - /media/lihao/F/mywork/mysql/share_f/master/conf:/etc/mysqlcnf
         networks:
@@ -20,7 +20,7 @@ services:
         command:
             - /bin/bash
             - -c
-            - cp /etc/mysqlcnf/my.cnf /etc/my.cnf && chmod 644 /etc/my.cnf && mysqld --initialize-insecure && mysqld_safe --user=mysql && tail -f /etc/my.cnf
+            - cp /etc/mysqlcnf/my.cnf /etc/my.cnf && chmod 644 /etc/my.cnf && tail -f /etc/my.cnf
         volumes:
             - /media/lihao/F/mywork/mysql/share_f/backup/conf:/etc/mysqlcnf
         networks:
